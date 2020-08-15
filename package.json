@@ -1,0 +1,19 @@
+{
+  "name": "choi-ho-SERVER",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
+    "date-fns": "^2.10.0",
+    "express": "^4.17.1",
+    "mocha": "^8.0.1",
+    "mongodb": "^3.5.3",
+    "nyc": "^15.1.0",
+    "rxjs": "~6.4.0",
+    "uuid": "^8.3.0"
+  }
+}

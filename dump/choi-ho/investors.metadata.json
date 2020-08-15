@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"choi-ho.investors"}],"uuid":"7acf6d07aa1e4e198d7daa64b889bea9"}
