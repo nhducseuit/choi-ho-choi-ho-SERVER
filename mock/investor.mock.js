@@ -105,8 +105,8 @@ const vloggers = [
         alias: 'Chị Hà',
         phoneNumber: '123',
         bank: {
-            bank: '',
-            accountNumber: '',
+            bank: 'ngân hàng tmcp an bình',
+            accountNumber: '1541000168099',
             cardNumber: '',
             nameOnCard: 'Nguyễn Thị Thu Hà'
         }
@@ -119,8 +119,8 @@ const vloggers = [
         alias: 'Em Thảo',
         phoneNumber: '345',
         bank: {
-            bank: '',
-            accountNumber: '',
+            bank: 'ngân hàng tmcp An Bình',
+            accountNumber: '1541077066006',
             cardNumber: '',
             nameOnCard: 'Nguyễn Thị Thảo'
         }
