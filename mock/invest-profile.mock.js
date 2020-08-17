@@ -8,36 +8,7 @@ const ducInvestProfiles = [
         turns: 1,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 8000000,
-                date: new Date(2019, 4, 10),
-                type: 1
-            },
-            {
-                turnInRound: 1,
-                amount: 2000000,
-                date: new Date(2019, 5, 10),
-                type: -1
-            },
-            {
-                turnInRound: 2,
-                amount: 2000000,
-                date: new Date(2019, 6, 10),
-                type: -1
-            },
-            {
-                turnInRound: 3,
-                amount: 2000000,
-                date: new Date(2019, 7, 10),
-                type: -1
-            },
-            {
-                turnInRound: 4,
-                amount: 2000000,
-                date: new Date(2019, 8, 10),
-                type: -1
-            }
+            
         ]
     },
     {
@@ -47,78 +18,7 @@ const ducInvestProfiles = [
         turns: 1,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 2000000,
-                date: new Date(2019, 9, 10),
-                type: -1
-            },
-            {
-                turnInRound: 1,
-                amount: 2000000,
-                date: new Date(2019, 10, 10),
-                type: -1
-            },
-            {
-                turnInRound: 2,
-                amount: 2000000,
-                date: new Date(2019, 11, 10),
-                type: -1
-            },
-            {
-                turnInRound: 3,
-                amount: 2000000,
-                date: new Date(2020, 0, 10),
-                type: -1
-            },
-            {
-                turnInRound: 4,
-                amount: 2000000,
-                date: new Date(2020, 1, 10),
-                type: -1
-            },
-            {
-                turnInRound: 5,
-                amount: 22000000,
-                date: new Date(2020, 2, 10),
-                type: 1
-            },
-            {
-                turnInRound: 6,
-                amount: 2000000,
-                date: new Date(2020, 3, 10),
-                type: -1
-            },
-            {
-                turnInRound: 7,
-                amount: 2000000,
-                date: new Date(2020, 4, 10),
-                type: -1
-            },
-            {
-                turnInRound: 8,
-                amount: 2000000,
-                date: new Date(2020, 5, 10),
-                type: -1
-            },
-            {
-                turnInRound: 9,
-                amount: 2000000,
-                date: new Date(2020, 6, 10),
-                type: -1
-            },
-            {
-                turnInRound: 10,
-                amount: 2000000,
-                date: new Date(2020, 7, 10),
-                type: -1
-            },
-            {
-                turnInRound: 11,
-                amount: 2000000,
-                date: new Date(2020, 8, 10),
-                type: -1
-            }
+            
         ]
     }
 ];
@@ -130,36 +30,7 @@ const hienInvestProfiles = [
         turns: 1,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 2000000,
-                date: new Date(2019, 4, 10),
-                type: -1
-            },
-            {
-                turnInRound: 1,
-                amount: 8000000,
-                date: new Date(2019, 5, 10),
-                type: 1
-            },
-            {
-                turnInRound: 2,
-                amount: 2000000,
-                date: new Date(2019, 6, 10),
-                type: -1
-            },
-            {
-                turnInRound: 3,
-                amount: 2000000,
-                date: new Date(2019, 7, 10),
-                type: -1
-            },
-            {
-                turnInRound: 4,
-                amount: 2000000,
-                date: new Date(2019, 8, 10),
-                type: -1
-            }
+            
         ]
     },
     {
@@ -169,78 +40,7 @@ const hienInvestProfiles = [
         turns: 1,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 2000000,
-                date: new Date(2019, 9, 10),
-                type: -1
-            },
-            {
-                turnInRound: 1,
-                amount: 2000000,
-                date: new Date(2019, 10, 10),
-                type: -1
-            },
-            {
-                turnInRound: 2,
-                amount: 2000000,
-                date: new Date(2019, 11, 10),
-                type: -1
-            },
-            {
-                turnInRound: 3,
-                amount: 22000000,
-                date: new Date(2020, 0, 10),
-                type: 1
-            },
-            {
-                turnInRound: 4,
-                amount: 2000000,
-                date: new Date(2020, 1, 10),
-                type: -1
-            },
-            {
-                turnInRound: 5,
-                amount: 2000000,
-                date: new Date(2020, 2, 10),
-                type: -1
-            },
-            {
-                turnInRound: 6,
-                amount: 2000000,
-                date: new Date(2020, 3, 10),
-                type: -1
-            },
-            {
-                turnInRound: 7,
-                amount: 2000000,
-                date: new Date(2020, 4, 10),
-                type: -1
-            },
-            {
-                turnInRound: 8,
-                amount: 2000000,
-                date: new Date(2020, 5, 10),
-                type: -1
-            },
-            {
-                turnInRound: 9,
-                amount: 2000000,
-                date: new Date(2020, 6, 10),
-                type: -1
-            },
-            {
-                turnInRound: 10,
-                amount: 2000000,
-                date: new Date(2020, 7, 10),
-                type: -1
-            },
-            {
-                turnInRound: 11,
-                amount: 2000000,
-                date: new Date(2020, 8, 10),
-                type: -1
-            }
+            
         ]
     }
 ];
@@ -252,36 +52,7 @@ const linhEmInvestProfiles = [
         turns: 1,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 2000000,
-                date: new Date(2019, 4, 10),
-                type: -1
-            },
-            {
-                turnInRound: 1,
-                amount: 2000000,
-                date: new Date(2019, 5, 10),
-                type: -1
-            },
-            {
-                turnInRound: 2,
-                amount: 8000000,
-                date: new Date(2019, 6, 10),
-                type: 1
-            },
-            {
-                turnInRound: 3,
-                amount: 2000000,
-                date: new Date(2019, 7, 10),
-                type: -1
-            },
-            {
-                turnInRound: 4,
-                amount: 2000000,
-                date: new Date(2019, 8, 10),
-                type: -1
-            }
+            
         ]
     },
     {
@@ -291,78 +62,7 @@ const linhEmInvestProfiles = [
         turns: 2,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 4000000,
-                date: new Date(2019, 9, 10),
-                type: -1
-            },
-            {
-                turnInRound: 1,
-                amount: 20000000,
-                date: new Date(2019, 10, 10),
-                type: 1
-            },
-            {
-                turnInRound: 2,
-                amount: 4000000,
-                date: new Date(2019, 11, 10),
-                type: -1
-            },
-            {
-                turnInRound: 3,
-                amount: 4000000,
-                date: new Date(2020, 0, 10),
-                type: -1
-            },
-            {
-                turnInRound: 4,
-                amount: 4000000,
-                date: new Date(2020, 1, 10),
-                type: -1
-            },
-            {
-                turnInRound: 5,
-                amount: 4000000,
-                date: new Date(2020, 2, 10),
-                type: -1
-            },
-            {
-                turnInRound: 6,
-                amount: 4000000,
-                date: new Date(2020, 3, 10),
-                type: -1
-            },
-            {
-                turnInRound: 7,
-                amount: 4000000,
-                date: new Date(2020, 4, 10),
-                type: -1
-            },
-            {
-                turnInRound: 8,
-                amount: 4000000,
-                date: new Date(2020, 5, 10),
-                type: -1
-            },
-            {
-                turnInRound: 9,
-                amount: 4000000,
-                date: new Date(2020, 6, 10),
-                type: -1
-            },
-            {
-                turnInRound: 10,
-                amount: 20000000,
-                date: new Date(2020, 7, 10),
-                type: 1
-            },
-            {
-                turnInRound: 11,
-                amount: 4000000,
-                date: new Date(2020, 8, 10),
-                type: -1
-            }
+            
         ]
     }
 ];
@@ -374,36 +74,7 @@ const linhChiInvestProfiles = [
         turns: 1,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 2000000,
-                date: new Date(2019, 4, 10),
-                type: -1
-            },
-            {
-                turnInRound: 1,
-                amount: 2000000,
-                date: new Date(2019, 5, 10),
-                type: -1
-            },
-            {
-                turnInRound: 2,
-                amount: 2000000,
-                date: new Date(2019, 6, 10),
-                type: -1
-            },
-            {
-                turnInRound: 3,
-                amount: 8000000,
-                date: new Date(2019, 7, 10),
-                type: 1
-            },
-            {
-                turnInRound: 4,
-                amount: 2000000,
-                date: new Date(2019, 8, 10),
-                type: -1
-            }
+            
         ]
     },
     {
@@ -413,78 +84,7 @@ const linhChiInvestProfiles = [
         turns: 1,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 2000000,
-                date: new Date(2019, 9, 10),
-                type: -1
-            },
-            {
-                turnInRound: 1,
-                amount: 2000000,
-                date: new Date(2019, 10, 10),
-                type: -1
-            },
-            {
-                turnInRound: 2,
-                amount: 2000000,
-                date: new Date(2019, 11, 10),
-                type: -1
-            },
-            {
-                turnInRound: 3,
-                amount: 2000000,
-                date: new Date(2020, 0, 10),
-                type: -1
-            },
-            {
-                turnInRound: 4,
-                amount: 22000000,
-                date: new Date(2020, 1, 10),
-                type: 1
-            },
-            {
-                turnInRound: 5,
-                amount: 2000000,
-                date: new Date(2020, 2, 10),
-                type: -1
-            },
-            {
-                turnInRound: 6,
-                amount: 2000000,
-                date: new Date(2020, 3, 10),
-                type: -1
-            },
-            {
-                turnInRound: 7,
-                amount: 2000000,
-                date: new Date(2020, 4, 10),
-                type: -1
-            },
-            {
-                turnInRound: 8,
-                amount: 2000000,
-                date: new Date(2020, 5, 10),
-                type: -1
-            },
-            {
-                turnInRound: 9,
-                amount: 2000000,
-                date: new Date(2020, 6, 10),
-                type: -1
-            },
-            {
-                turnInRound: 10,
-                amount: 2000000,
-                date: new Date(2020, 7, 10),
-                type: -1
-            },
-            {
-                turnInRound: 11,
-                amount: 2000000,
-                date: new Date(2020, 8, 10),
-                type: -1
-            }
+            
         ]
     }
 ];
@@ -496,36 +96,7 @@ const hangInvestProfiles = [
         turns: 1,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 2000000,
-                date: new Date(2019, 4, 10),
-                type: -1
-            },
-            {
-                turnInRound: 1,
-                amount: 2000000,
-                date: new Date(2019, 5, 10),
-                type: -1
-            },
-            {
-                turnInRound: 2,
-                amount: 2000000,
-                date: new Date(2019, 6, 10),
-                type: -1
-            },
-            {
-                turnInRound: 3,
-                amount: 2000000,
-                date: new Date(2019, 7, 10),
-                type: -1
-            },
-            {
-                turnInRound: 4,
-                amount: 8000000,
-                date: new Date(2019, 8, 10),
-                type: 1
-            }
+            
         ]
     },
     {
@@ -535,78 +106,7 @@ const hangInvestProfiles = [
         turns: 1,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 22000000,
-                date: new Date(2019, 9, 10),
-                type: 1
-            },
-            {
-                turnInRound: 1,
-                amount: 2000000,
-                date: new Date(2019, 10, 10),
-                type: -1
-            },
-            {
-                turnInRound: 2,
-                amount: 2000000,
-                date: new Date(2019, 11, 10),
-                type: -1
-            },
-            {
-                turnInRound: 3,
-                amount: 2000000,
-                date: new Date(2020, 0, 10),
-                type: -1
-            },
-            {
-                turnInRound: 4,
-                amount: 2000000,
-                date: new Date(2020, 1, 10),
-                type: -1
-            },
-            {
-                turnInRound: 5,
-                amount: 2000000,
-                date: new Date(2020, 2, 10),
-                type: -1
-            },
-            {
-                turnInRound: 6,
-                amount: 2000000,
-                date: new Date(2020, 3, 10),
-                type: -1
-            },
-            {
-                turnInRound: 7,
-                amount: 2000000,
-                date: new Date(2020, 4, 10),
-                type: -1
-            },
-            {
-                turnInRound: 8,
-                amount: 2000000,
-                date: new Date(2020, 5, 10),
-                type: -1
-            },
-            {
-                turnInRound: 9,
-                amount: 2000000,
-                date: new Date(2020, 6, 10),
-                type: -1
-            },
-            {
-                turnInRound: 10,
-                amount: 2000000,
-                date: new Date(2020, 7, 10),
-                type: -1
-            },
-            {
-                turnInRound: 11,
-                amount: 2000000,
-                date: new Date(2020, 8, 10),
-                type: -1
-            }
+            
         ]
     }
 ];
@@ -618,78 +118,7 @@ const leInvestProfiles = [
         turns: 1,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 2000000,
-                date: new Date(2019, 9, 10),
-                type: -1
-            },
-            {
-                turnInRound: 1,
-                amount: 2000000,
-                date: new Date(2019, 10, 10),
-                type: -1
-            },
-            {
-                turnInRound: 2,
-                amount: 2000000,
-                date: new Date(2019, 11, 10),
-                type: -1
-            },
-            {
-                turnInRound: 3,
-                amount: 2000000,
-                date: new Date(2020, 0, 10),
-                type: -1
-            },
-            {
-                turnInRound: 4,
-                amount: 2000000,
-                date: new Date(2020, 1, 10),
-                type: -1
-            },
-            {
-                turnInRound: 5,
-                amount: 2000000,
-                date: new Date(2020, 2, 10),
-                type: -1
-            },
-            {
-                turnInRound: 6,
-                amount: 2000000,
-                date: new Date(2020, 3, 10),
-                type: -1
-            },
-            {
-                turnInRound: 7,
-                amount: 2000000,
-                date: new Date(2020, 4, 10),
-                type: -1
-            },
-            {
-                turnInRound: 8,
-                amount: 2000000,
-                date: new Date(2020, 5, 10),
-                type: -1
-            },
-            {
-                turnInRound: 9,
-                amount: 22000000,
-                date: new Date(2020, 6, 10),
-                type: 1
-            },
-            {
-                turnInRound: 10,
-                amount: 2000000,
-                date: new Date(2020, 7, 10),
-                type: -1
-            },
-            {
-                turnInRound: 11,
-                amount: 2000000,
-                date: new Date(2020, 8, 10),
-                type: -1
-            }
+            
         ]
     }
 ];
@@ -701,78 +130,7 @@ const khanhInvestProfiles = [
         turns: 1,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 2000000,
-                date: new Date(2019, 9, 10),
-                type: -1
-            },
-            {
-                turnInRound: 1,
-                amount: 2000000,
-                date: new Date(2019, 10, 10),
-                type: -1
-            },
-            {
-                turnInRound: 2,
-                amount: 2000000,
-                date: new Date(2019, 11, 10),
-                type: -1
-            },
-            {
-                turnInRound: 3,
-                amount: 2000000,
-                date: new Date(2020, 0, 10),
-                type: -1
-            },
-            {
-                turnInRound: 4,
-                amount: 2000000,
-                date: new Date(2020, 1, 10),
-                type: -1
-            },
-            {
-                turnInRound: 5,
-                amount: 2000000,
-                date: new Date(2020, 2, 10),
-                type: -1
-            },
-            {
-                turnInRound: 6,
-                amount: 2000000,
-                date: new Date(2020, 3, 10),
-                type: -1
-            },
-            {
-                turnInRound: 7,
-                amount: 22000000,
-                date: new Date(2020, 4, 10),
-                type: 1
-            },
-            {
-                turnInRound: 8,
-                amount: 2000000,
-                date: new Date(2020, 5, 10),
-                type: -1
-            },
-            {
-                turnInRound: 9,
-                amount: 2000000,
-                date: new Date(2020, 6, 10),
-                type: -1
-            },
-            {
-                turnInRound: 10,
-                amount: 2000000,
-                date: new Date(2020, 7, 10),
-                type: -1
-            },
-            {
-                turnInRound: 11,
-                amount: 2000000,
-                date: new Date(2020, 8, 10),
-                type: -1
-            }
+            
         ]
     }
 ];
@@ -784,78 +142,7 @@ const haInvestProfiles = [
         turns: 3,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 6000000,
-                date: new Date(2019, 9, 10),
-                type: -1
-            },
-            {
-                turnInRound: 1,
-                amount: 6000000,
-                date: new Date(2019, 10, 10),
-                type: -1
-            },
-            {
-                turnInRound: 2,
-                amount: 1800000,
-                date: new Date(2019, 11, 10),
-                type: 1
-            },
-            {
-                turnInRound: 3,
-                amount: 6000000,
-                date: new Date(2020, 0, 10),
-                type: -1
-            },
-            {
-                turnInRound: 4,
-                amount: 6000000,
-                date: new Date(2020, 1, 10),
-                type: -1
-            },
-            {
-                turnInRound: 5,
-                amount: 6000000,
-                date: new Date(2020, 2, 10),
-                type: -1
-            },
-            {
-                turnInRound: 6,
-                amount: 6000000,
-                date: new Date(2020, 3, 10),
-                type: -1
-            },
-            {
-                turnInRound: 7,
-                amount: 6000000,
-                date: new Date(2020, 4, 10),
-                type: -1
-            },
-            {
-                turnInRound: 8,
-                amount: 18000000,
-                date: new Date(2020, 5, 10),
-                type: 1
-            },
-            {
-                turnInRound: 9,
-                amount: 6000000,
-                date: new Date(2020, 6, 10),
-                type: -1
-            },
-            {
-                turnInRound: 10,
-                amount: 6000000,
-                date: new Date(2020, 7, 10),
-                type: -1
-            },
-            {
-                turnInRound: 11,
-                amount: 18000000,
-                date: new Date(2020, 8, 10),
-                type: 1
-            }
+            
         ]
     }
 ];
@@ -867,78 +154,7 @@ const thaoInvestProfiles = [
         turns: 1,
         status: InvestStatus.ACTIVE,
         investments: [
-            {
-                turnInRound: 0,
-                amount: 2000000,
-                date: new Date(2019, 9, 10),
-                type: -1
-            },
-            {
-                turnInRound: 1,
-                amount: 2000000,
-                date: new Date(2019, 10, 10),
-                type: -1
-            },
-            {
-                turnInRound: 2,
-                amount: 2000000,
-                date: new Date(2019, 11, 10),
-                type: -1
-            },
-            {
-                turnInRound: 3,
-                amount: 2000000,
-                date: new Date(2020, 0, 10),
-                type: -1
-            },
-            {
-                turnInRound: 4,
-                amount: 2000000,
-                date: new Date(2020, 1, 10),
-                type: -1
-            },
-            {
-                turnInRound: 5,
-                amount: 2000000,
-                date: new Date(2020, 2, 10),
-                type: -1
-            },
-            {
-                turnInRound: 6,
-                amount: 22000000,
-                date: new Date(2020, 3, 10),
-                type: 1
-            },
-            {
-                turnInRound: 7,
-                amount: 2000000,
-                date: new Date(2020, 4, 10),
-                type: -1
-            },
-            {
-                turnInRound: 8,
-                amount: 2000000,
-                date: new Date(2020, 5, 10),
-                type: -1
-            },
-            {
-                turnInRound: 9,
-                amount: 2000000,
-                date: new Date(2020, 6, 10),
-                type: -1
-            },
-            {
-                turnInRound: 10,
-                amount: 2000000,
-                date: new Date(2020, 7, 10),
-                type: -1
-            },
-            {
-                turnInRound: 11,
-                amount: 2000000,
-                date: new Date(2020, 8, 10),
-                type: -1
-            }
+            
         ]
     }
 ];
