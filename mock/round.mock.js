@@ -7,11 +7,36 @@ const vlogrounds = [
         dateStart: new Date(2019, 4, 1),
         dateEnd: new Date(2019, 8, 30),
         schedule: [
-            '5e4eff8b6b2693d84ae7db72',
-            '7cee9e30-62d1-46dc-97ea-bf2e6b8f7441',
-            'e8842900-0685-4894-8df2-66a4821c4f53',
-            'cbf08139-3dba-4120-8406-93243f2353f6',
-            '29c0e911-9c18-497a-b9ef-b10fb170f765'
+            {
+                investorId: '5e4eff8b6b2693d84ae7db72',
+                turnInRound: 0,
+                dateStart: new Date(2019, 4, 1),
+                dateEnd: new Date(2019, 4, 31)
+            },
+            {
+                investorId: '7cee9e30-62d1-46dc-97ea-bf2e6b8f7441',
+                turnInRound: 1,
+                dateStart: new Date(2019, 5, 1),
+                dateEnd: new Date(2019, 5, 30)
+            },
+            {
+                investorId: 'e8842900-0685-4894-8df2-66a4821c4f53',
+                turnInRound: 2,
+                dateStart: new Date(2019, 6, 1),
+                dateEnd: new Date(2019, 6, 31)
+            },
+            {
+                investorId:  'cbf08139-3dba-4120-8406-93243f2353f6',
+                turnInRound: 3,
+                dateStart: new Date(2019, 7, 1),
+                dateEnd: new Date(2019, 7, 31)
+            },
+            {
+                investorId: '29c0e911-9c18-497a-b9ef-b10fb170f765',
+                turnInRound: 4,
+                dateStart: new Date(2019, 8, 1),
+                dateEnd: new Date(2019, 8, 30)
+            }
         ]
     },
     {
