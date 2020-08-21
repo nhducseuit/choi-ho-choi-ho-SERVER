@@ -28,6 +28,10 @@ class MongoService {
     }
 
     async findById(id, collection) {
+        return __db.collection(collection).find({ id: id });
+    }
+
+    async findByObjectId(id, collection) {
         return __db.collection(collection).findOne({ _id: new ObjectID(id) });
     }
 
