@@ -44,12 +44,12 @@ class InvestService {
 
         const isInvestee = this.isInvestee(investorId, round, investDate);
         // Get invest amount from ?
-        const investAmount = isInvestee ? investProfile.investedAmount : investProfile.investAmount;
+        const annualDepositeAmount = isInvestee ? investProfile.annualWithdrawAmount : investProfile.annualDepositeAmount;
         const investType = isInvestee ? 1 : -1;
 
         const invest = Invest.invest({
             date: new Date(investDate),
-            amount: investAmount,
+            amount: annualDepositeAmount,
             type: investType
         });
 
@@ -60,14 +60,54 @@ class InvestService {
         investProfile.investments.push(invest);
         investProfile.status = InvestStatus.ACTIVE;
 
-        return mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).updateOne({
+        try {
+            return mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).updateOne({
+                investorId: investorId,
+                roundId: roundId
+            }, {
+                $set: {
+                    investments: investProfile.investments,
+                    status: investProfile.status
+                }
+            });
+        } catch (err) {
+            throw new ServerException('Failed to persist investment updates to database', 'FAIL_TO_UPDATE', {
+                investorId: investorId,
+                roundId: roundId,
+                error: err
+            });
+        }
+    }
+
+    async getInvestment(investorId, roundId, investDate) {
+        const round = await mongoService.findById(roundId, ROUND_COLLECTION);
+        if (!round) {
+            throw new ServerException('Round not found!', 'ROUND_NOT_FOUND', {
+                roundId: roundId
+            });
+        }
+
+        const investProfile = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).find({
             investorId: investorId,
             roundId: roundId
-        }, {
-            $set: {
-                investments: investProfile.investments,
-                status: investProfile.status
-            }
+        });
+
+        if (!investProfile) {
+            throw new ServerException('Invest profile not found!', 'INVEST_PROFILE_NOT_FOUND', {
+                investorId: investorId,
+                roundId: roundId
+            });
+        }
+
+        const isInvestee = this.isInvestee(investorId, round, investDate);
+        // Get invest amount from ?
+        const annualDepositeAmount = isInvestee ? investProfile.annualWithdrawAmount : investProfile.annualDepositeAmount;
+        const investType = isInvestee ? 1 : -1;
+
+        return Invest.invest({
+            date: new Date(investDate),
+            amount: annualDepositeAmount,
+            type: investType
         });
     }
 

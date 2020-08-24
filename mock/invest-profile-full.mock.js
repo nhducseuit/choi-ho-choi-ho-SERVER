@@ -6,8 +6,8 @@ const ducInvestProfiles = [
         roundId: '221c5dc5-45db-4e76-8bbe-0a6c92a9325a',
         joinDate: new Date(2019, 4, 1),
         turns: 1,
-        investAmount: 2000000,
-        investedAmount: 8000000,
+        annualDepositeAmount: 2000000,
+        annualWithdrawAmount: 8000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -42,8 +42,8 @@ const ducInvestProfiles = [
         roundId: '645373f9-d0e3-4f8b-9c50-29defe69b74b',
         joinDate: new Date(2019, 9, 1),
         turns: 1,
-        investAmount: 2000000,
-        investedAmount: 22000000,
+        annualDepositeAmount: 2000000,
+        annualWithdrawAmount: 22000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -115,8 +115,8 @@ const hienInvestProfiles = [
         roundId: '221c5dc5-45db-4e76-8bbe-0a6c92a9325a',
         joinDate: new Date(2019, 4, 1),
         turns: 1,
-        investAmount: 2000000,
-        investedAmount: 8000000,
+        annualDepositeAmount: 2000000,
+        annualWithdrawAmount: 8000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -151,8 +151,8 @@ const hienInvestProfiles = [
         roundId: '645373f9-d0e3-4f8b-9c50-29defe69b74b',
         joinDate: new Date(2019, 9, 1),
         turns: 1,
-        investAmount: 2000000,
-        investedAmount: 22000000,
+        annualDepositeAmount: 2000000,
+        annualWithdrawAmount: 22000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -224,8 +224,8 @@ const linhEmInvestProfiles = [
         roundId: '221c5dc5-45db-4e76-8bbe-0a6c92a9325a',
         joinDate: new Date(2019, 4, 1),
         turns: 1,
-        investAmount: 2000000,
-        investedAmount: 8000000,
+        annualDepositeAmount: 2000000,
+        annualWithdrawAmount: 8000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -260,8 +260,8 @@ const linhEmInvestProfiles = [
         roundId: '645373f9-d0e3-4f8b-9c50-29defe69b74b',
         joinDate: new Date(2019, 9, 1),
         turns: 2,
-        investAmount: 4000000,
-        investedAmount: 20000000,
+        annualDepositeAmount: 4000000,
+        annualWithdrawAmount: 20000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -333,8 +333,8 @@ const linhChiInvestProfiles = [
         roundId: '221c5dc5-45db-4e76-8bbe-0a6c92a9325a',
         joinDate: new Date(2019, 4, 1),
         turns: 1,
-        investAmount: 2000000,
-        investedAmount: 8000000,
+        annualDepositeAmount: 2000000,
+        annualWithdrawAmount: 8000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -369,8 +369,8 @@ const linhChiInvestProfiles = [
         roundId: '645373f9-d0e3-4f8b-9c50-29defe69b74b',
         joinDate: new Date(2019, 9, 1),
         turns: 1,
-        investAmount: 2000000,
-        investedAmount: 22000000,
+        annualDepositeAmount: 2000000,
+        annualWithdrawAmount: 22000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -442,8 +442,8 @@ const hangInvestProfiles = [
         roundId: '221c5dc5-45db-4e76-8bbe-0a6c92a9325a',
         joinDate: new Date(2019, 4, 1),
         turns: 1,
-        investAmount: 2000000,
-        investedAmount: 8000000,
+        annualDepositeAmount: 2000000,
+        annualWithdrawAmount: 8000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -478,8 +478,8 @@ const hangInvestProfiles = [
         roundId: '645373f9-d0e3-4f8b-9c50-29defe69b74b',
         joinDate: new Date(2019, 9, 1),
         turns: 1,
-        investAmount: 2000000,
-        investedAmount: 22000000,
+        annualDepositeAmount: 2000000,
+        annualWithdrawAmount: 22000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -551,8 +551,8 @@ const leInvestProfiles = [
         roundId: '645373f9-d0e3-4f8b-9c50-29defe69b74b',
         joinDate: new Date(2019, 9, 1),
         turns: 1,
-        investAmount: 2000000,
-        investedAmount: 22000000,
+        annualDepositeAmount: 2000000,
+        annualWithdrawAmount: 22000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -624,8 +624,8 @@ const khanhInvestProfiles = [
         roundId: '645373f9-d0e3-4f8b-9c50-29defe69b74b',
         joinDate: new Date(2019, 9, 1),
         turns: 1,
-        investAmount: 2000000,
-        investedAmount: 22000000,
+        annualDepositeAmount: 2000000,
+        annualWithdrawAmount: 22000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -697,8 +697,8 @@ const haInvestProfiles = [
         roundId: '645373f9-d0e3-4f8b-9c50-29defe69b74b',
         joinDate: new Date(2019, 9, 1),
         turns: 3,
-        investAmount: 6000000,
-        investedAmount: 18000000,
+        annualDepositeAmount: 6000000,
+        annualWithdrawAmount: 18000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {
@@ -770,8 +770,8 @@ const thaoInvestProfiles = [
         roundId: '645373f9-d0e3-4f8b-9c50-29defe69b74b',
         joinDate: new Date(2019, 9, 1),
         turns: 1,
-        investAmount: 2000000,
-        investedAmount: 22000000,
+        annualDepositeAmount: 2000000,
+        annualWithdrawAmount: 22000000,
         status: InvestStatus.ACTIVE,
         investments: [
             {

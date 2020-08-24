@@ -7,8 +7,8 @@ class InvestProfile {
         joinDate,
         // Payment method details
         turns,
-        investAmount,
-        investedAmount,
+        annualDepositeAmount,
+        annualWithdrawAmount,
         status,
         investments
     ) {
@@ -16,8 +16,8 @@ class InvestProfile {
         this.roundId = roundId;
         this.joinDate = joinDate;
         this.turns = turns;
-        this.investAmount = investAmount;
-        this.investedAmount = investedAmount;
+        this.annualDepositeAmount = annualDepositeAmount;
+        this.annualWithdrawAmount = annualWithdrawAmount;
         this.status = status;
         this.investments = investments;
     }
@@ -28,8 +28,8 @@ class InvestProfile {
             investProfile.roundId,
             new Date(investProfile.joinDate),
             investProfile.turns,
-            investProfile.investAmount,
-            investProfile.investedAmount,
+            investProfile.annualDepositeAmount,
+            investProfile.annualWithdrawAmount,
             InvestStatus.NEW,
             []
         );
