@@ -27,6 +27,49 @@ class InvestorService {
 
     }
 
+    async getInvestorsOfTontine(tontineId) {
+        
+        // Get a set of round belonging to a tontine
+        const roundIds = await mongoService.getDb().collection(ROUNDS_COLLECTION).find(
+            { tontineId: tontineId },
+            {
+                id: 1,
+                _id: 0
+            }
+        );
+        // Get all invest profiles in a set of rounds
+        const investProfiles = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).find(
+            {
+                $query: {
+                    investorId: investorId,
+                    roundId: { $in: roundIds }
+                },
+                $orderby: {
+                    joinDate: -1
+                }
+            }
+        );
+
+        const investProfilesGroupByInvestor = investProfiles.reduce((acc, cur) => {
+            let investProfileGroup = acc[acc.length - 1];
+            if (!investProfileGroup) {
+                investProfileGroup = [cur];
+                acc.push(investProfileGroup);
+                return acc;
+            }
+            const lastInvestorId = investProfileGroup[0].investorId;
+            if (lastInvestorId === cur.investorId) {
+                investProfileGroup.push(cur);
+                return acc;
+            } else {
+                acc.push([acc]);
+                return acc;
+            }
+        }, []);
+
+        return investProfilesGroupByInvestor.map(investProfilesGroup => this.getInvestorProfileInTontine(investProfilesGroup, tontineId));
+    }
+
     async getInvestorForTontine(investorId, tontineId) {
 
         // Get a set of round belonging to a tontine
@@ -58,6 +101,10 @@ class InvestorService {
             });
         }
 
+        return this.getInvestorProfileInTontine(investProfiles, tontineId);
+    }
+
+    getInvestorProfileInTontine(investProfiles, tontineId) {
         const joinDate = investProfiles[investProfiles.length - 1].joinDate;
         const status = investProfiles[0].status;
         // TODO add leftDate in model and mock data

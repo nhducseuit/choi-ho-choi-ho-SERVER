@@ -8,11 +8,11 @@ class TontineService {
     constructor() {}
 
     async findByUID(uid) {
-        return mongoService.findById(uid, TONTINES_COLLECTION);
+        return mongoService.findByObjectId(uid, TONTINES_COLLECTION);
     }
 
     async findByTontineId(tontineId) {
-        return mongoService.getDb().collection(TONTINES_COLLECTION).findOne({id: tontineId});
+        return mongoService.findById(tontineId, TONTINES_COLLECTION);
     }
 
     async updateTontine(tontineId, updatedTontine) {

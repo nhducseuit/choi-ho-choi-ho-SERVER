@@ -19,4 +19,9 @@ router.get('/investee', async (req, res) => {
     res.status(200).json(investee);
 });
 
+router.post('/invest', async (req, res) => {
+    const resData = await investorController.invest(req, res);
+    res.status(200).json(resData);
+})
+
 module.exports = router;

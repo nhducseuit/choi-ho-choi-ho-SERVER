@@ -1,11 +1,13 @@
 const MongoService = require('../../services/mongo.service');
 const TontineService = require('../../services/tontine.service');
 const InvestorService = require('../../services/investor.service');
+const InvestService = require('../../services/invest.service');
 const handleError = require('../../middlewares/handle-error');
 
 const mongoService = new MongoService();
 const tontineService = new TontineService();
 const investorService = new InvestorService();
+const investService = new InvestService();
 
 const INVESTORS_COLLECTION = 'investors';
 
@@ -132,6 +134,11 @@ class InvestorController {
             investee.endOfRoundDebt = calculateDebtByEndOfRound(tontine, investee);
         }
         return investee;
+    }
+
+    async invest(req, res) {
+        const { investorId, roundId, investDate } = req.body;
+        return investService.invest(investorId, roundId, new Date(investDate));
     }
 
     calculateDebtByEndOfRound(tontine, investor) {

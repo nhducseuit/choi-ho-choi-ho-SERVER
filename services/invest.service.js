@@ -12,7 +12,7 @@ const ROUND_COLLECTION = 'rounds';
 class InvestService {
 
     constructor() {
-
+        
     }
 
     async invest(investorId, roundId, investDate) {
@@ -118,26 +118,6 @@ class InvestService {
         }));
         return investorId === investTurn.investorId;
     }
-
-
-
-    // getTurnInRound(round, investDate) {
-    //     return round.schedule.findIndex(investTurn => {
-    //         return isWithinInterval(investDate, {
-    //             start: investTurn.dateStart,
-    //             end: investTurn.dateEnd
-    //         });
-    //     });
-    // }
-
-    /**
-     * // For the date within the interval:
-isWithinInterval(new Date(2014, 0, 3), {
-  start: new Date(2014, 0, 1),
-  end: new Date(2014, 0, 7)
-})
-//=> true
-     */
 
 }
 
