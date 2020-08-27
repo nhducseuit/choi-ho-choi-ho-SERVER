@@ -1,8 +1,8 @@
 const InvestStatus = Object.freeze({
-    NEW: Symbol('NEW'),
-    ACTIVE: Symbol('ACTIVE'),
-    SUSPENDED: Symbol('SUSPENDED'),
-    LEFT: Symbol('LEFT')
+    NEW: 'NEW',
+    ACTIVE: 'ACTIVE',
+    SUSPENDED: 'SUSPENDED',
+    LEFT: 'LEFT'
 });
 
 module.exports = InvestStatus;

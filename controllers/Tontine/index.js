@@ -134,7 +134,7 @@ class TontineController {
         await mongoService.updateToCollection(tontineId, tontine, TONTINES_COLLECTION);
 
         // Perform first turn of investment, with turn of round remains 0
-        const investee = investors.find(investor => investor.id === newRound.schedule.find(sche => sche.index === newRound.turn).investee);
+        const investee = investors.find(investor => investor.id === newRound.schedule.find(sche => sche.index === newRound.turn).investee).toArray();
         investors.forEach(investor => {
             invest(investor, investee, currentRound);
         });
@@ -142,6 +142,11 @@ class TontineController {
         await Promise.all(investors.map(investor => investorService.updateInvestor(investor.id, { status: investor.status, debt: investor.debt })));
 
         return tontineService.findByTontineId(tontineId);
+    }
+
+    async getInvestors(req, res) {
+        const tontineId = req.params.id;
+        return investorService.getInvestorsOfTontine(tontineId);
     }
 
     invest(investor, investee, currentRound) {

@@ -9,3 +9,5 @@ class BadRequestException extends Exception {
         super(message, code, error);
     }
 }
+
+module.exports = BadRequestException;

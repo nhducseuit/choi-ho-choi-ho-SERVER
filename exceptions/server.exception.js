@@ -1,6 +1,6 @@
-import Exception from "./exception";
+const Exception = require('./exception');
 
-export class ServerException extends Exception {
+class ServerException extends Exception {
     constructor(
         message,
         code,
@@ -9,3 +9,5 @@ export class ServerException extends Exception {
         super(message, code, error);
     }
 }
+
+module.exports = ServerException;

@@ -35,4 +35,9 @@ router.post('/shift-round', async (req, res) => {
     res.status(200).json(tontine);
 });
 
+router.get('/:id/investors', async (req, res) => {
+    const investors = await controller.getInvestors(req, res);
+    res.status(200).json(investors);
+});
+
 module.exports = router;

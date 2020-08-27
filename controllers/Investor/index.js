@@ -128,7 +128,7 @@ class InvestorController {
 
         const investee = tontine.investors.find(investor => {
             return investor.nextTurns.some(nt => nt === tontine.turn);
-        });
+        }).toArray();
         if (investee) {
             // required to provide debt by the end of current round
             investee.endOfRoundDebt = calculateDebtByEndOfRound(tontine, investee);

@@ -1,5 +1,5 @@
 const MongoService = require('./mongo.service');
-const { ServerException } = require('../exceptions/server.exception');
+const ServerException = require('../exceptions/server.exception');
 const InvestStatus = require('../models/types/invest-status.enum');
 const mongoService = new MongoService();
 
@@ -28,27 +28,24 @@ class InvestorService {
     }
 
     async getInvestorsOfTontine(tontineId) {
-        
+
         // Get a set of round belonging to a tontine
         const roundIds = await mongoService.getDb().collection(ROUNDS_COLLECTION).find(
             { tontineId: tontineId },
             {
-                id: 1,
-                _id: 0
+                projection: {
+                    id: 1,
+                    _id: 0
+                }
             }
-        );
+        ).map((result) => result.id).toArray();
+
         // Get all invest profiles in a set of rounds
         const investProfiles = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).find(
             {
-                $query: {
-                    investorId: investorId,
-                    roundId: { $in: roundIds }
-                },
-                $orderby: {
-                    joinDate: -1
-                }
+                roundId: { $in: roundIds }
             }
-        );
+        ).sort([['investorId', -1], ['joinDate', -1]]).toArray();
 
         const investProfilesGroupByInvestor = investProfiles.reduce((acc, cur) => {
             let investProfileGroup = acc[acc.length - 1];
@@ -62,7 +59,7 @@ class InvestorService {
                 investProfileGroup.push(cur);
                 return acc;
             } else {
-                acc.push([acc]);
+                acc.push([cur]);
                 return acc;
             }
         }, []);
@@ -79,7 +76,7 @@ class InvestorService {
                 id: 1,
                 _id: 0
             }
-        );
+        ).toArray();
 
         // Get all invest profile of an investor in a set of rounds
         const investProfiles = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).find(
@@ -92,7 +89,7 @@ class InvestorService {
                     joinDate: -1
                 }
             }
-        );
+        ).toArray();
 
         if (!investProfiles) {
             throw new ServerException('Cannot find investor for tontine', 'CANNOT_FIND_INVESTOR_TONTINE', {
@@ -108,7 +105,7 @@ class InvestorService {
         const joinDate = investProfiles[investProfiles.length - 1].joinDate;
         const status = investProfiles[0].status;
         // TODO add leftDate in model and mock data
-        const leftDate = status === InvestStatus.LEFT ? investProfiles[0].leftDate : null;
+        const leftDate = (status === InvestStatus.LEFT) ? investProfiles[0].leftDate : null;
         const allInvestments = investProfiles.flatMap(investProfile => investProfile.investments);
         const totalDeposited = allInvestments.reduce((acc, cur) => {
             return cur.type === -1 ? acc + cur.amount : acc;
@@ -119,7 +116,7 @@ class InvestorService {
         }, 0);
 
         return {
-            investorId: investorId,
+            investorId: investProfiles[0].investorId,
             tontineId: tontineId,
             status: status,
             joinDate: joinDate,

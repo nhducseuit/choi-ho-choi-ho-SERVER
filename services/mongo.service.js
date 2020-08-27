@@ -28,7 +28,7 @@ class MongoService {
     }
 
     async findById(id, collection) {
-        return __db.collection(collection).find({ id: id });
+        return __db.collection(collection).find({ id: id }).toArray();
     }
 
     async findByObjectId(id, collection) {
