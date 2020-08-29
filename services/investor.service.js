@@ -41,11 +41,30 @@ class InvestorService {
         ).map((result) => result.id).toArray();
 
         // Get all invest profiles in a set of rounds
-        const investProfiles = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).find(
+        const investProfiles = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).aggregate([
             {
-                roundId: { $in: roundIds }
+                $match: {
+                    roundId: { $in: roundIds }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'investors',
+                    localField: 'investorId',
+                    foreignField: 'id',
+                    as: 'investor'
+                }
+            },
+            {
+                $unwind: '$investor'
+            },
+            {
+                $sort: {
+                    investorId: -1,
+                    joinDate: -1
+                }
             }
-        ).sort([['investorId', -1], ['joinDate', -1]]).toArray();
+        ]).toArray();
 
         const investProfilesGroupByInvestor = investProfiles.reduce((acc, cur) => {
             let investProfileGroup = acc[acc.length - 1];
@@ -117,7 +136,12 @@ class InvestorService {
 
         return {
             investorId: investProfiles[0].investorId,
-            tontineId: tontineId,
+            createdDate: investProfiles[0].investor.createdDate,
+            updatedDate: investProfiles[0].investor.updatedDate,
+            name: investProfiles[0].investor.name,
+            alias: investProfiles[0].investor.alias,
+            phoneNumber: investProfiles[0].investor.phoneNumber,
+            bank: investProfiles[0].investor.bank,
             status: status,
             joinDate: joinDate,
             leftDate: leftDate,
