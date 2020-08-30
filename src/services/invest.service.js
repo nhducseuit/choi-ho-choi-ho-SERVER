@@ -63,7 +63,7 @@ class InvestService {
         investProfile.status = InvestStatus.ACTIVE;
 
         try {
-            return mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).updateOne({
+            const output = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).updateOne({
                 investorId: investorId,
                 roundId: roundId
             }, {
@@ -72,6 +72,15 @@ class InvestService {
                     status: investProfile.status
                 }
             });
+
+            if (output.result.ok === 1) {
+                return true;
+            } else {
+                throw new ServerException('Failed to persist investment updates to database', 'FAIL_TO_UPDATE', {
+                    investorId: investorId,
+                    roundId: roundId
+                });
+            }
         } catch (err) {
             throw new ServerException('Failed to persist investment updates to database', 'FAIL_TO_UPDATE', {
                 investorId: investorId,
