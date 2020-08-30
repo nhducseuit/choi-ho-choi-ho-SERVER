@@ -30,10 +30,12 @@ class InvestService {
             });
         }
 
-        const investProfile = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).find({
+        const investProfile = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).findOne({
             investorId: investorId,
             roundId: roundId
-        }).toArray();
+        }, {
+            limit: 1
+        });
 
         if (!investProfile) {
             throw new ServerException('Invest profile not found!', 'INVEST_PROFILE_NOT_FOUND', {
@@ -113,9 +115,9 @@ class InvestService {
 
     isInvestee(investorId, round, investDate) {
         const investTurn = round.schedule.find(entry => isWithinInterval(investDate, {
-            start: entry.startDate,
-            end: endDate
-        })).toArray();
+            start: entry.dateStart,
+            end: entry.dateEnd
+        }));
         return investorId === investTurn.investorId;
     }
 
