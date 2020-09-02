@@ -7,6 +7,7 @@ const add = require('date-fns/add');
 const MongoService = require('../../services/mongo.service');
 const InvestorService = require('../../services/investor.service');
 const TontineService = require('../../services/tontine.service');
+const ServerException = require('../../exceptions/server.exception');
 
 const mongoService = new MongoService();
 const investorService = new InvestorService();
@@ -145,8 +146,9 @@ class TontineController {
     }
 
     async getInvestors(req, res) {
-        const tontineId = req.params.id;
-        return investorService.getInvestorsOfTontine(tontineId);
+        throw new ServerException('A random server exception', 'RANDOM_EXCEPTION');
+        // const tontineId = req.params.id;
+        // return investorService.getInvestorsOfTontine(tontineId);
     }
 
     invest(investor, investee, currentRound) {
