@@ -2,7 +2,8 @@
   "name": "choi-ho-SERVER",
   "version": "0.0.0",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "mocha"
   },
   "private": true,
   "dependencies": {
@@ -15,6 +16,7 @@
     "mongodb": "^3.5.3",
     "nyc": "^15.1.0",
     "rxjs": "~6.4.0",
+    "sinon": "^9.0.3",
     "uuid": "^8.3.0"
   }
 }

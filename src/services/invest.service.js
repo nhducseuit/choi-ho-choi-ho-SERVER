@@ -127,7 +127,7 @@ class InvestService {
             start: entry.dateStart,
             end: entry.dateEnd
         }));
-        return investorId === investTurn.investorId;
+        return investTurn ? investorId === investTurn.investorId : false;
     }
 
 }
