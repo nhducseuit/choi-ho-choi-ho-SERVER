@@ -1,26 +1,26 @@
-const MongoService = require('./mongo.service');
 const ServerException = require('../exceptions/server.exception');
 const InvestStatus = require('../models/types/invest-status.enum');
-const mongoService = new MongoService();
 
 const INVEST_PROFILE_COLLECTION = 'invest_profiles';
 const INVESTORS_COLLECTION = 'investors';
 const ROUNDS_COLLECTION = 'rounds';
 
 class InvestorService {
-    constructor() { }
+    constructor(mongoService) {
+        this.mongoService = mongoService;
+    }
 
     async getActiveInvestor() {
-        // return mongoService.getDb().collection(INVESTORS_COLLECTION).find({ status: { $not: 'LEFT' } });
+        // return this.mongoService.getDb().collection(INVESTORS_COLLECTION).find({ status: { $not: 'LEFT' } });
     }
 
     async findInvestorByPhoneNumber(phoneNumber) {
-        // return mongoService.getDb().collection(INVESTORS_COLLECTION).findOne({ "phoneNumber": phoneNumber });
+        // return this.mongoService.getDb().collection(INVESTORS_COLLECTION).findOne({ "phoneNumber": phoneNumber });
     }
 
     async updateInvestor(id, update) {
         delete update._id;
-        return mongoService.updateToCollection(id, update, INVESTORS_COLLECTION);
+        return this.mongoService.updateToCollection(id, update, INVESTORS_COLLECTION);
     }
 
     async getInvestor(investorId) {
@@ -30,7 +30,7 @@ class InvestorService {
     async getInvestorsOfTontine(tontineId) {
 
         // Get a set of round belonging to a tontine
-        const roundIds = await mongoService.getDb().collection(ROUNDS_COLLECTION).find(
+        const roundIds = await this.mongoService.getDb().collection(ROUNDS_COLLECTION).find(
             { tontineId: tontineId },
             {
                 projection: {
@@ -41,7 +41,7 @@ class InvestorService {
         ).map((result) => result.id).toArray();
 
         // Get all invest profiles in a set of rounds
-        const investProfiles = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).aggregate([
+        const investProfiles = await this.mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).aggregate([
             {
                 $match: {
                     roundId: { $in: roundIds }
@@ -89,7 +89,7 @@ class InvestorService {
     async getInvestorForTontine(investorId, tontineId) {
 
         // Get a set of round belonging to a tontine
-        const roundIds = await mongoService.getDb().collection(ROUNDS_COLLECTION).find(
+        const roundIds = await this.mongoService.getDb().collection(ROUNDS_COLLECTION).find(
             { tontineId: tontineId },
             {
                 id: 1,
@@ -98,7 +98,7 @@ class InvestorService {
         ).toArray();
 
         // Get all invest profile of an investor in a set of rounds
-        const investProfiles = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).find(
+        const investProfiles = await this.mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).find(
             {
                 $query: {
                     investorId: investorId,
@@ -151,4 +151,4 @@ class InvestorService {
     }
 }
 
-module.exports = InvestorService;
+module.exports = (mongoService) => new InvestorService(mongoService);

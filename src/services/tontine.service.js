@@ -1,23 +1,21 @@
-const MongoService = require('./mongo.service');
-
-const mongoService = new MongoService();
-
 const TONTINES_COLLECTION = 'tontines';
 
 class TontineService {
-    constructor() {}
+    constructor(mongoService) {
+        this.mongoService = mongoService;
+    }
 
     async findByUID(uid) {
-        return mongoService.findByObjectId(uid, TONTINES_COLLECTION);
+        return this.mongoService.findByObjectId(uid, TONTINES_COLLECTION);
     }
 
     async findByTontineId(tontineId) {
-        return mongoService.findById(tontineId, TONTINES_COLLECTION);
+        return this.mongoService.findById(tontineId, TONTINES_COLLECTION);
     }
 
     async updateTontine(tontineId, updatedTontine) {
-        return mongoService.updateToCollection(tontineId, updatedTontine, TONTINES_COLLECTION);
+        return this.mongoService.updateToCollection(tontineId, updatedTontine, TONTINES_COLLECTION);
     }
 }
 
-module.exports = TontineService;
+module.exports = (mongoService) => new TontineService(mongoService);

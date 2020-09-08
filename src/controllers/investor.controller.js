@@ -1,24 +1,22 @@
-const MongoService = require('../../services/mongo.service');
-const TontineService = require('../../services/tontine.service');
-const InvestorService = require('../../services/investor.service');
-const InvestService = require('../../services/invest.service');
-const handleError = require('../../middlewares/handle-error');
-
-const mongoService = new MongoService();
-const tontineService = new TontineService();
-const investorService = new InvestorService();
-const investService = new InvestService();
+const ServerException = require("../exceptions/server.exception");
 
 const INVESTORS_COLLECTION = 'investors';
 
 class InvestorController {
+    constructor(mongoService, tontineService, investorService, investService) {
+        this.mongoService = mongoService;
+        this.tontineService = tontineService;
+        this.investorService = investorService;
+        this.investService = investService;
+    }
+
     async getInvestors(req, res) {
-        return mongoService.getAllOfCollection(INVESTORS_COLLECTION);
+        return this.mongoService.getAllOfCollection(INVESTORS_COLLECTION);
     }
 
     async getInvestorById(req, res) {
         const investorId = req.params.id;
-        return mongoService.findById(investorId, INVESTORS_COLLECTION);
+        return this.mongoService.findById(investorId, INVESTORS_COLLECTION);
     }
 
     async createInvestor(req, res) {
@@ -40,30 +38,36 @@ class InvestorController {
 
         let tontine;
         try {
-            tontine = await tontineService.findByTontineId(tontineId);
+            tontine = await this.tontineService.findByTontineId(tontineId);
         } catch (err) {
-            handleError(res, err.message, "Failed to get tontine");
-            return;
+            throw new ServerException('Failed to get tontine', 'FAILED_TO_GET_TONTINE', {
+                tontineId: tontineId,
+                error: err
+            });
         }
 
         try {
-            const investorExisted = await investorService.findInvestorByPhoneNumber(newInvestor.phoneNumber);
+            const investorExisted = await this.investorService.findInvestorByPhoneNumber(newInvestor.phoneNumber);
             if (investorExisted) {
                 res.status(400).send('Investor with phone number ' + newInvestor.phoneNumber + ' already exists');
                 return;
             }
         } catch (err) {
-            handleError(res, err.message, "Failed to get investor");
-            return;
+            throw new ServerException('Failed to get investor', 'FAILED_TO_GET_INVESTOR', {
+                phoneNumber: newInvestor.phoneNumber,
+                error: err
+            });
         }
 
         // First save the investor
         try {
-            await mongoService.insertToCollection(newInvestor, INVESTORS_COLLECTION);
+            await this.mongoService.insertToCollection(newInvestor, INVESTORS_COLLECTION);
             newInvestor = await investorService.findInvestorByPhoneNumber(newInvestor.phoneNumber);
         } catch (err) {
-            handleError(res, err.message, 'Failed to add new investor');
-            return;
+            throw new ServerException('Failed to add new investor', 'FAILED_TO_ADD_INVESTOR', {
+                investor: newInvestor,
+                error: err
+            });
         }
 
         // In case a round is on-going, add the new investor to current round
@@ -77,10 +81,12 @@ class InvestorController {
             });
 
             try {
-                tontine = await tontineService.updateTontine(tontine.id, tontine);
+                tontine = await this.tontineService.updateTontine(tontine.id, tontine);
             } catch (err) {
-                handleError(res, err.message, 'Failed to add new investor to current round');
-                return;
+                throw new ServerException('Failed to add investor to current round', 'FAILED_TO_ADD_INVESTOR_TO_ROUND', {
+                    tontineId: tontine.id,
+                    error: err
+                });
             }
 
             // If requested to invest to current on-going round, do invest
@@ -89,19 +95,24 @@ class InvestorController {
                 try {
                     investee = await getInvestee(currentRound);
                 } catch (err) {
-                    handleError(res, err.message, 'Failed to get investee');
-                    return;
+                    throw new ServerException('Failed to get investee', 'FAILED_TO_GET_INVESTEE', {
+                        currentRound: currentRound,
+                        error: err
+                    });
                 }
                 // Invest and save investee
                 // TODO in case investor is investee, we have to perform redundant queries below to persist non-changed data,
                 // => room for optimisation
                 invest(newInvestor, investee, currentRound);
                 try {
-                    await investorService.updateInvestor(investee.id, investee);
-                    await investorService.updateInvestor(newInvestor.id, newInvestor);
+                    await this.investorService.updateInvestor(investee.id, investee);
+                    await this.investorService.updateInvestor(newInvestor.id, newInvestor);
                 } catch (err) {
-                    handleError(res, err.message, 'Failed to invest to current round');
-                    return;
+                    throw new ServerException('Failed to invest to current round', 'FAILED_TO_INVEST_TO_CURRENT_ROUND', {
+                        investorId: newInvestor.id,
+                        currentRound: currentRound,
+                        error: err
+                    });
                 }
             }
 
@@ -120,10 +131,12 @@ class InvestorController {
             return;
         }
         try {
-            const tontine = await tontineService.findByTontineId(tontineId);
+            const tontine = await this.tontineService.findByTontineId(tontineId);
         } catch (err) {
-            handleError(res, err.message, 'Failed to get tontine');
-            return;
+            throw new ServerException('Failed to get tontine', 'FAILED_TO_GET_TONTINE', {
+                tontineId: tontineId,
+                error: err
+            });
         }
 
         const investee = tontine.investors.find(investor => {
@@ -138,7 +151,7 @@ class InvestorController {
 
     async invest(req, res) {
         const { investorId, roundId, investDate } = req.body;
-        return investService.invest(investorId, roundId, new Date(investDate));
+        return this.investService.invest(investorId, roundId, new Date(investDate));
     }
 
     calculateDebtByEndOfRound(tontine, investor) {
@@ -149,7 +162,7 @@ class InvestorController {
         const remainingInvestedTurns = getRemainingTurnInARound(tontine, investor).length;
         return currentDebt - (investor.turns * sum * (round - currentTurn - 1 - remainingInvestedTurns)) + remainingInvestedTurns * sum * (round - investor.turns);
     }
-    
+
     getRemainingTurnInARound(tontine, investor) {
         const remainingTurn = [];
         for (const turn of investor.nextTurns) {
@@ -160,4 +173,14 @@ class InvestorController {
         return remainingTurn;
     }
 }
-module.exports = InvestorController;
+module.exports = (
+    mongoService,
+    tontineService,
+    investorService,
+    investService
+) => new InvestorController(
+    mongoService,
+    tontineService,
+    investorService,
+    investService
+);

@@ -4,25 +4,22 @@ const endOfMonth = require('date-fns/endOfMonth');
 const startOfMonth = require('date-fns/startOfMonth');
 const add = require('date-fns/add');
 
-const MongoService = require('../../services/mongo.service');
-const InvestorService = require('../../services/investor.service');
-const TontineService = require('../../services/tontine.service');
-const ServerException = require('../../exceptions/server.exception');
-
-const mongoService = new MongoService();
-const investorService = new InvestorService();
-const tontineService = new TontineService();
-
 const TONTINES_COLLECTION = 'tontines';
 
 class TontineController {
+    constructor(mongoService, investorService, tontineService) {
+        this.mongoService = mongoService;
+        this.investorService = investorService;
+        this.tontineService = tontineService;
+    }
+
     async getTontines(req, res) {
-        return mongoService.getAllOfCollection(TONTINES_COLLECTION);
+        return this.mongoService.getAllOfCollection(TONTINES_COLLECTION);
     }
 
     async getTontineById(req, res) {
         const tontineId = req.params.id;
-        return mongoService.findById(tontineId, TONTINES_COLLECTION);
+        return this.mongoService.findById(tontineId, TONTINES_COLLECTION);
     }
 
     async createTontine(req, res) {
@@ -30,18 +27,18 @@ class TontineController {
         tontine.createdDate = new Date();
         tontine.updatedDate = tontine.createdDate;
         tontine.startDate = new Date(tontine.startDate);
-        return mongoService.insertToCollection(tontine, TONTINES_COLLECTION);
+        return this.mongoService.insertToCollection(tontine, TONTINES_COLLECTION);
     }
 
     async updateTontine(req, res) {
         const update = req.body;
         const tontineId = req.params.id;
-        return mongoService.updateToCollection(tontineId, update, TONTINES_COLLECTION);
+        return this.mongoService.updateToCollection(tontineId, update, TONTINES_COLLECTION);
     }
 
     async deleteTontine(req, res) {
         const tontineId = req.params.id;
-        return mongoService.deleteDocument(tontineId, TONTINES_COLLECTION);
+        return this.mongoService.deleteDocument(tontineId, TONTINES_COLLECTION);
     }
 
     async shiftRound(req, res) {
@@ -87,7 +84,7 @@ class TontineController {
             res.status(400).send('Invalid tontine id');
             return;
         }
-        let tontine = await tontineService.findByTontineId(tontineId);
+        let tontine = await this.tontineService.findByTontineId(tontineId);
         const lastRound = tontine.rounds ? tontine.rounds[tontine.rounds] : null;
         if (lastRound) {
             if (!isRoundEnding(lastRound)) {
@@ -109,7 +106,7 @@ class TontineController {
             startDate = startOfMonth(startDate);
         }
         // Get all active investor
-        let investors = await investorService.getActiveInvestor();
+        let investors = await this.investorService.getActiveInvestor();
         if (investors.some(investor => !schedule.includes(sche => sche.investee === investor.id))) {
             res.status(400).send('Investment plan must include all active investor, or not included investor must leave first');
             return;
@@ -132,7 +129,7 @@ class TontineController {
         }
 
         // Save to database
-        await mongoService.updateToCollection(tontineId, tontine, TONTINES_COLLECTION);
+        await this.mongoService.updateToCollection(tontineId, tontine, TONTINES_COLLECTION);
 
         // Perform first turn of investment, with turn of round remains 0
         const investee = investors.find(investor => investor.id === newRound.schedule.find(sche => sche.index === newRound.turn).investee).toArray();
@@ -140,15 +137,14 @@ class TontineController {
             invest(investor, investee, currentRound);
         });
 
-        await Promise.all(investors.map(investor => investorService.updateInvestor(investor.id, { status: investor.status, debt: investor.debt })));
+        await Promise.all(investors.map(investor => this.investorService.updateInvestor(investor.id, { status: investor.status, debt: investor.debt })));
 
-        return tontineService.findByTontineId(tontineId);
+        return this.tontineService.findByTontineId(tontineId);
     }
 
     async getInvestors(req, res) {
-        throw new ServerException('A random server exception', 'RANDOM_EXCEPTION');
-        // const tontineId = req.params.id;
-        // return investorService.getInvestorsOfTontine(tontineId);
+        const tontineId = req.params.id;
+        return this.investorService.getInvestorsOfTontine(tontineId);
     }
 
     invest(investor, investee, currentRound) {
@@ -165,4 +161,12 @@ class TontineController {
         return round.turn === round.size - 1;
     }
 }
-module.exports = TontineController;
+module.exports = (
+    mongoService,
+    investorService,
+    tontineService
+) => new TontineController(
+    mongoService,
+    investorService,
+    tontineService
+);

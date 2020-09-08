@@ -36,4 +36,10 @@ describe('InvestService', function(){
             expect(investService.isInvestee(investorId, round, investDate)).to.be.false;
         });
     });
+
+    describe('invest', () => {
+        it('should throw exception when round is not found in database', () => {
+            
+        });
+    });
 });

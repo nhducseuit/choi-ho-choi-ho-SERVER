@@ -1,18 +1,15 @@
-const MongoService = require('./mongo.service');
 const ServerException = require('../exceptions/server.exception');
 const isWithinInterval = require('date-fns/isWithinInterval');
 const Invest = require('../models/invest.model');
 const InvestStatus = require('../models/types/invest-status.enum');
-
-const mongoService = new MongoService();
 
 const INVEST_PROFILE_COLLECTION = 'invest_profiles';
 const ROUND_COLLECTION = 'rounds';
 
 class InvestService {
 
-    constructor() {
-        
+    constructor(mongoService) {
+        this.mongoService = mongoService;
     }
 
     async invest(investorId, roundId, investDate) {
@@ -23,14 +20,14 @@ class InvestService {
         // Figure out schedule and invest amount from round
         // Combine with investDate to get value of turn in round
         // for this investement
-        const round = await mongoService.findById(roundId, ROUND_COLLECTION);
+        const round = await this.mongoService.findById(roundId, ROUND_COLLECTION);
         if (!round) {
             throw new ServerException('Round not found!', 'ROUND_NOT_FOUND', {
                 roundId: roundId
             });
         }
 
-        const investProfile = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).findOne({
+        const investProfile = await this.mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).findOne({
             investorId: investorId,
             roundId: roundId
         }, {
@@ -63,7 +60,7 @@ class InvestService {
         investProfile.status = InvestStatus.ACTIVE;
 
         try {
-            const output = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).updateOne({
+            const output = await this.mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).updateOne({
                 investorId: investorId,
                 roundId: roundId
             }, {
@@ -91,14 +88,14 @@ class InvestService {
     }
 
     async getInvestment(investorId, roundId, investDate) {
-        const round = await mongoService.findById(roundId, ROUND_COLLECTION);
+        const round = await this.mongoService.findById(roundId, ROUND_COLLECTION);
         if (!round) {
             throw new ServerException('Round not found!', 'ROUND_NOT_FOUND', {
                 roundId: roundId
             });
         }
 
-        const investProfile = await mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).find({
+        const investProfile = await this.mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).find({
             investorId: investorId,
             roundId: roundId
         }).toArray();
@@ -132,4 +129,4 @@ class InvestService {
 
 }
 
-module.exports = InvestService;
+module.exports = (mongoService) => new InvestService(mongoService);

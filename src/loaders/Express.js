@@ -4,12 +4,12 @@ const routes = require('../routes');
 const bodyParser = require("body-parser");
 
 class ExpressLoader {
-    constructor() {
+    constructor(diContainer) {
         const app = express();
 
         app.use(bodyParser.json());
-        // Pass routing config
-        routes(app);
+
+        routes(app, diContainer);
         
         app.use(ExpressLoader.errorHandler);
 
