@@ -1,13 +1,17 @@
 const chai = require('chai');
+chai.use(require('chai-as-promised'));
+const sinon = require('sinon');
 const expect = chai.expect;
-const InvestService = require('../../src/services/invest.service');
+const investServiceFactory = require('../../src/services/invest.service');
 const rounds = require('../../src/mock/round.mock');
-
-let investService;
+const ServerException = require('../../src/exceptions/server.exception');
 
 describe('InvestService', function(){
+    let investService;
+    let mongoService;
     beforeEach(function() {
-        investService = new InvestService();
+        mongoService = sinon.mock();
+        investService = investServiceFactory(mongoService);
     });
 
     describe('isInvestee', function() {
@@ -38,8 +42,18 @@ describe('InvestService', function(){
     });
 
     describe('invest', () => {
-        it('should throw exception when round is not found in database', () => {
-            
+        let investorId;
+        let roundId;
+        let investDate;
+        beforeEach(() => {
+            investorId = 'aduc';
+            roundId = 'round2019';
+            investDate = new Date(2019, 8, 1);
+        });
+        it('should throw exception when round is not found in database', async () => {
+            mongoService.findById = sinon.spy();
+            mongoService.findById.alwaysReturned(null);
+            await expect(investService.invest(investorId, roundId, investDate)).to.be.rejectedWith(ServerException);
         });
     });
 });

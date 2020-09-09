@@ -1,10 +1,10 @@
-class Exception {
+class Exception extends Error {
     constructor(
         message,
         code,
         error
     ) {
-        this.message = message;
+        super(message);
         this.code = code;
         this.error = error;
     }
