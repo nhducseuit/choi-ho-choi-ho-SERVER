@@ -41,16 +41,7 @@ class InvestService {
             });
         }
 
-        const isInvestee = this.isInvestee(investorId, round, investDate);
-        // Get invest amount from ?
-        const annualDepositeAmount = isInvestee ? investProfile.annualWithdrawAmount : investProfile.annualDepositeAmount;
-        const investType = isInvestee ? 1 : -1;
-
-        const invest = Invest.invest({
-            date: new Date(investDate),
-            amount: annualDepositeAmount,
-            type: investType
-        });
+        const invest = this.prepareInvestment(investorId, round, investDate, investProfile);
 
         if (!investProfile.investments) {
             investProfile.investments = [];
@@ -85,6 +76,20 @@ class InvestService {
                 error: err
             });
         }
+    }
+
+    prepareInvestment(investorId, round, investDate, investProfile) {
+        const isInvestee = this.isInvestee(investorId, round, investDate);
+        // Get invest amount from ?
+        const annualDepositeAmount = isInvestee ? investProfile.annualWithdrawAmount : investProfile.annualDepositeAmount;
+        const investType = isInvestee ? 1 : -1;
+
+        const invest = Invest.invest({
+            date: new Date(investDate),
+            amount: annualDepositeAmount,
+            type: investType
+        });
+        return invest;
     }
 
     async getInvestment(investorId, roundId, investDate) {

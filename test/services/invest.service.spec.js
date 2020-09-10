@@ -5,13 +5,23 @@ const expect = chai.expect;
 const investServiceFactory = require('../../src/services/invest.service');
 const rounds = require('../../src/mock/round.mock');
 const ServerException = require('../../src/exceptions/server.exception');
+const vlogrounds = require('../../src/mock/round.mock');
 
 describe('InvestService', function(){
     let investService;
     let mongoService;
+    let db;
+    let dbCollection;
     beforeEach(function() {
+        db = sinon.mock();
+        dbCollection = sinon.mock();
+        db.collection = sinon.fake.returns(dbCollection);
+
         mongoService = sinon.mock();
+        mongoService.getDb = sinon.fake.returns(db);
+
         investService = investServiceFactory(mongoService);
+
     });
 
     describe('isInvestee', function() {
@@ -45,15 +55,27 @@ describe('InvestService', function(){
         let investorId;
         let roundId;
         let investDate;
+        const validRound = vlogrounds[0];
+        const validInvestorId = validRound.schedule[0].investorId;
         beforeEach(() => {
             investorId = 'aduc';
             roundId = 'round2019';
             investDate = new Date(2019, 8, 1);
         });
         it('should throw exception when round is not found in database', async () => {
-            mongoService.findById = sinon.spy();
-            mongoService.findById.alwaysReturned(null);
-            await expect(investService.invest(investorId, roundId, investDate)).to.be.rejectedWith(ServerException);
+            mongoService.findById = sinon.fake.returns(null);
+            await expect(investService.invest(investorId, roundId, investDate)).to.be.rejectedWith(ServerException, 'Round not found!');
         });
+        it('should throw exception when invest profile is not found', async () => {
+            mongoService.findById = sinon.fake.returns({});
+            dbCollection.findOne = sinon.fake.returns(null);
+            await expect(investService.invest(investorId, roundId, investDate)).to.be.rejectedWith(ServerException, 'Invest profile not found!');
+        });
+        it('should correctly update investment to database when invest information is valid');
+    });
+
+    describe('prepareInvestment', () => {
+        it('Should correctly prepare investment data when investor is investee');
+        it('Should correctly prepare investment data when investor is not investee');
     });
 });
