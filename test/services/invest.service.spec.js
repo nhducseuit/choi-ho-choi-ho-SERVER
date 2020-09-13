@@ -6,25 +6,27 @@ const investServiceFactory = require('../../src/services/invest.service');
 const rounds = require('../../src/mock/round.mock');
 const ServerException = require('../../src/exceptions/server.exception');
 const vlogrounds = require('../../src/mock/round.mock');
+const vloggersInvestProfiles = require('../../src/mock/invest-profile.mock');
+const Invest = require('../../src/models/invest.model');
+const InvestStatus = require('../../src/models/types/invest-status.enum');
 
-describe('InvestService', function(){
+describe('InvestService', function () {
     let investService;
     let mongoService;
-    let db;
-    let dbCollection;
-    beforeEach(function() {
-        db = sinon.mock();
-        dbCollection = sinon.mock();
-        db.collection = sinon.fake.returns(dbCollection);
-
+    let mockCollection;
+    beforeEach(function () {
         mongoService = sinon.mock();
-        mongoService.getDb = sinon.fake.returns(db);
-
         investService = investServiceFactory(mongoService);
-
+        mockCollection = sinon.mock();
+        sinon.replaceGetter(investService, "collection", () => { return mockCollection; });
     });
 
-    describe('isInvestee', function() {
+    afterEach(() => {
+        // Restore the default sandbox here
+        sinon.restore();
+    });
+
+    describe('isInvestee', function () {
         const round = rounds[0];
         let investDate;
         let investorId;
@@ -54,11 +56,12 @@ describe('InvestService', function(){
     describe('invest', () => {
         let investorId;
         let roundId;
+        let investProfile;
         let investDate;
         const validRound = vlogrounds[0];
         const validInvestorId = validRound.schedule[0].investorId;
         beforeEach(() => {
-            investorId = 'aduc';
+            investorId = validInvestorId;;
             roundId = 'round2019';
             investDate = new Date(2019, 8, 1);
         });
@@ -68,14 +71,57 @@ describe('InvestService', function(){
         });
         it('should throw exception when invest profile is not found', async () => {
             mongoService.findById = sinon.fake.returns({});
-            dbCollection.findOne = sinon.fake.returns(null);
+            mockCollection.findOne = sinon.fake.returns(null);
+            // sinon.replaceGetter(investService, "collection", () => { return mockCollection; });
             await expect(investService.invest(investorId, roundId, investDate)).to.be.rejectedWith(ServerException, 'Invest profile not found!');
         });
-        it('should correctly update investment to database when invest information is valid');
+        it('should correctly update investment to database when invest information is valid', async () => {
+            investProfile = vloggersInvestProfiles.find(profile => profile.investorId === validInvestorId);
+            mongoService.findById = sinon.fake.returns(validRound);
+            mockCollection.findOne = sinon.fake.returns(investProfile);
+            mockCollection.updateOne = sinon.fake.returns({
+                result: {
+                    ok: 1
+                }
+            });
+            // sinon.replaceGetter(investService, "collection", () => { return mockCollection; });
+            expect(await investService.invest(validInvestorId, roundId, investDate)).to.be.true;
+            expect(investProfile.status).to.be.equal(InvestStatus.ACTIVE);
+            expect(investProfile.investments[investProfile.investments.length - 1]).to.be.eql(Invest.invest({
+                date: new Date(investDate),
+                amount: investProfile.annualDepositeAmount,
+                type: -1
+            }));
+        });
+        it('should correctly update investment to database when profile investment has not yet initiated');
+        it('should throw exception if update result is not OK');
+        it('should throw exception if update throws error');
+
     });
 
     describe('prepareInvestment', () => {
-        it('Should correctly prepare investment data when investor is investee');
-        it('Should correctly prepare investment data when investor is not investee');
+        const round = vlogrounds[0];
+        const investorId = round.schedule[0].investorId;
+        const investProfile = vloggersInvestProfiles.find(profile => profile.investorId === investorId);
+        let investDate;
+        let expectedInvestment;
+        it('Should correctly prepare investment data when investor is investee', () => {
+            investDate = round.schedule[0].dateStart;
+            expectedInvestment = Invest.invest({
+                date: new Date(investDate),
+                amount: investProfile.annualWithdrawAmount,
+                type: 1
+            });
+            expect(investService.prepareInvestment(investorId, round, investDate, investProfile)).to.eql(expectedInvestment);
+        });
+        it('Should correctly prepare investment data when investor is not investee', () => {
+            investDate = round.schedule[1].dateStart;
+            expectedInvestment = Invest.invest({
+                date: new Date(investDate),
+                amount: investProfile.annualDepositeAmount,
+                type: -1
+            });
+            expect(investService.prepareInvestment(investorId, round, investDate, investProfile)).to.eql(expectedInvestment);
+        });
     });
 });

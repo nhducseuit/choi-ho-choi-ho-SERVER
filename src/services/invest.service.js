@@ -12,6 +12,10 @@ class InvestService {
         this.mongoService = mongoService;
     }
 
+    get collection() {
+        return this.mongoService.getDb().collection(INVEST_PROFILE_COLLECTION);
+    }
+
     async invest(investorId, roundId, investDate) {
         // TODO forbid investing to closed round
         // - Allow for now
@@ -27,7 +31,7 @@ class InvestService {
             });
         }
 
-        const investProfile = await this.mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).findOne({
+        const investProfile = await this.collection.findOne({
             investorId: investorId,
             roundId: roundId
         }, {
@@ -51,7 +55,7 @@ class InvestService {
         investProfile.status = InvestStatus.ACTIVE;
 
         try {
-            const output = await this.mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).updateOne({
+            const output = await this.collection.updateOne({
                 investorId: investorId,
                 roundId: roundId
             }, {
@@ -100,7 +104,7 @@ class InvestService {
             });
         }
 
-        const investProfile = await this.mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).find({
+        const investProfile = await this.collection.find({
             investorId: investorId,
             roundId: roundId
         }).toArray();

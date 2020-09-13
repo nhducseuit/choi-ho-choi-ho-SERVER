@@ -13,6 +13,8 @@ diContainer.factory('tontineController', require('./controllers/tontine.controll
 
 mongoService.init()
     .then(() => {
+        // register db dependency for used later by various services
+        diContainer.register('db', mongoService.getDb());
         // Load the application using loader
         const ExpressLoader = require('./loaders/Express');
         new ExpressLoader(diContainer);
