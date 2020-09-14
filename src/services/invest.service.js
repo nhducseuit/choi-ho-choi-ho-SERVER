@@ -82,6 +82,31 @@ class InvestService {
         }
     }
 
+    async getInvestment(investorId, roundId, investDate) {
+        const round = await this.mongoService.findById(roundId, ROUND_COLLECTION);
+        if (!round) {
+            throw new ServerException('Round not found!', 'ROUND_NOT_FOUND', {
+                roundId: roundId
+            });
+        }
+
+        const investProfile = await this.collection.findOne({
+            investorId: investorId,
+            roundId: roundId
+        }, {
+            limit: 1
+        });
+
+        if (!investProfile) {
+            throw new ServerException('Invest profile not found!', 'INVEST_PROFILE_NOT_FOUND', {
+                investorId: investorId,
+                roundId: roundId
+            });
+        }
+
+        return this.prepareInvestment(investorId, round, investDate, investProfile);
+    }
+
     prepareInvestment(investorId, round, investDate, investProfile) {
         const isInvestee = this.isInvestee(investorId, round, investDate);
         // Get invest amount from ?
@@ -94,38 +119,6 @@ class InvestService {
             type: investType
         });
         return invest;
-    }
-
-    async getInvestment(investorId, roundId, investDate) {
-        const round = await this.mongoService.findById(roundId, ROUND_COLLECTION);
-        if (!round) {
-            throw new ServerException('Round not found!', 'ROUND_NOT_FOUND', {
-                roundId: roundId
-            });
-        }
-
-        const investProfile = await this.collection.find({
-            investorId: investorId,
-            roundId: roundId
-        }).toArray();
-
-        if (!investProfile) {
-            throw new ServerException('Invest profile not found!', 'INVEST_PROFILE_NOT_FOUND', {
-                investorId: investorId,
-                roundId: roundId
-            });
-        }
-
-        const isInvestee = this.isInvestee(investorId, round, investDate);
-        // Get invest amount from ?
-        const annualDepositeAmount = isInvestee ? investProfile.annualWithdrawAmount : investProfile.annualDepositeAmount;
-        const investType = isInvestee ? 1 : -1;
-
-        return Invest.invest({
-            date: new Date(investDate),
-            amount: annualDepositeAmount,
-            type: investType
-        });
     }
 
     isInvestee(investorId, round, investDate) {

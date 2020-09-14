@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "start": "node src/index.js",
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "test-coverage": "nyc --reporter=text mocha --recursive"
   },
   "private": true,
   "dependencies": {

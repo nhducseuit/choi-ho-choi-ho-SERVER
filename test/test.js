@@ -1,25 +1,25 @@
-var assert = require('assert');
-require('chai').should();
-// var expect = require('chai').expect;
-// var assert = require('chai').assert;
+// var assert = require('assert');
+// require('chai').should();
+// // var expect = require('chai').expect;
+// // var assert = require('chai').assert;
 
 
-describe('Array', function () {
-    describe('#indexOf()', function () {
-        it('should return -1 when the value is not present', function () {
-            assert.equal([1, 2, 3].indexOf(4), -1);
-        });
-    });
-});
+// describe('Array', function () {
+//     describe('#indexOf()', function () {
+//         it('should return -1 when the value is not present', function () {
+//             assert.equal([1, 2, 3].indexOf(4), -1);
+//         });
+//     });
+// });
 
-describe('Array', function () {
-    describe('#indexOf()', function () {
-      it('should return -1 when the value is not present', function () {
-        [1, 2, 3].indexOf(5).should.equal(-1);
-        [1, 2, 3].indexOf(0).should.equal(-1);
-      });
-    });
-  });
+// describe('Array', function () {
+//     describe('#indexOf()', function () {
+//       it('should return -1 when the value is not present', function () {
+//         [1, 2, 3].indexOf(5).should.equal(-1);
+//         [1, 2, 3].indexOf(0).should.equal(-1);
+//       });
+//     });
+//   });
 
 
   // Avoid using arrow function because it automatically bind 'this' and make it impossible to access Mocha context
