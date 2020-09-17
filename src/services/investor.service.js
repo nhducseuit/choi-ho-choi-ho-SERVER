@@ -1,5 +1,4 @@
 const ServerException = require('../exceptions/server.exception');
-const InvestStatus = require('../models/types/invest-status.enum');
 
 const INVEST_PROFILE_COLLECTION = 'invest_profiles';
 const INVESTORS_COLLECTION = 'investors';
@@ -8,6 +7,10 @@ const ROUNDS_COLLECTION = 'rounds';
 class InvestorService {
     constructor(mongoService) {
         this.mongoService = mongoService;
+    }
+
+    collection(collectionName) {
+        return this.mongoService.getDb().collection(collectionName);
     }
 
     async getActiveInvestor() {
@@ -30,7 +33,7 @@ class InvestorService {
     async getInvestorsOfTontine(tontineId) {
 
         // Get a set of round belonging to a tontine
-        const roundIds = await this.mongoService.getDb().collection(ROUNDS_COLLECTION).find(
+        const roundIds = await this.collection(ROUNDS_COLLECTION).find(
             { tontineId: tontineId },
             {
                 projection: {
@@ -41,7 +44,7 @@ class InvestorService {
         ).map((result) => result.id).toArray();
 
         // Get all invest profiles in a set of rounds
-        const investProfiles = await this.mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).aggregate([
+        const investProfiles = await this.collection(INVEST_PROFILE_COLLECTION).aggregate([
             {
                 $match: {
                     roundId: { $in: roundIds }
@@ -83,13 +86,13 @@ class InvestorService {
             }
         }, []);
 
-        return investProfilesGroupByInvestor.map(investProfilesGroup => this.getInvestorProfileInTontine(investProfilesGroup, tontineId));
+        return investProfilesGroupByInvestor.map(investProfilesGroup => this.getInvestorProfileInTontine(investProfilesGroup));
     }
 
     async getInvestorForTontine(investorId, tontineId) {
 
         // Get a set of round belonging to a tontine
-        const roundIds = await this.mongoService.getDb().collection(ROUNDS_COLLECTION).find(
+        const roundIds = await this.collection(ROUNDS_COLLECTION).find(
             { tontineId: tontineId },
             {
                 id: 1,
@@ -98,7 +101,7 @@ class InvestorService {
         ).toArray();
 
         // Get all invest profile of an investor in a set of rounds
-        const investProfiles = await this.mongoService.getDb().collection(INVEST_PROFILE_COLLECTION).find(
+        const investProfiles = await this.collection(INVEST_PROFILE_COLLECTION).find(
             {
                 $query: {
                     investorId: investorId,
@@ -117,14 +120,21 @@ class InvestorService {
             });
         }
 
-        return this.getInvestorProfileInTontine(investProfiles, tontineId);
+        return this.getInvestorProfileInTontine(investProfiles);
     }
 
-    getInvestorProfileInTontine(investProfiles, tontineId) {
-        const joinDate = investProfiles[investProfiles.length - 1].joinDate;
-        const status = investProfiles[0].status;
+    getInvestorProfileInTontine(investProfiles) {
+        if(!Array.isArray(investProfiles) || investProfiles.length === 0) {
+            return;
+        }
+        // Sort by joinDate descending
+        investProfiles.sort((ip1, ip2) => ip1.joinDate.valueOf() - ip2.joinDate.valueOf());
+
+        const oldest = investProfiles[0];
+        const latest = investProfiles[investProfiles.length - 1];
+        
         // TODO add leftDate in model and mock data
-        const leftDate = (status === InvestStatus.LEFT) ? investProfiles[0].leftDate : null;
+        // const leftDate = (earliestStatus === InvestStatus.LEFT) ? investProfiles[0].leftDate : null;
         const allInvestments = investProfiles.flatMap(investProfile => investProfile.investments);
         const totalDeposited = allInvestments.reduce((acc, cur) => {
             return cur.type === -1 ? acc + cur.amount : acc;
@@ -135,16 +145,15 @@ class InvestorService {
         }, 0);
 
         return {
-            investorId: investProfiles[0].investorId,
-            createdDate: investProfiles[0].investor.createdDate,
-            updatedDate: investProfiles[0].investor.updatedDate,
-            name: investProfiles[0].investor.name,
-            alias: investProfiles[0].investor.alias,
-            phoneNumber: investProfiles[0].investor.phoneNumber,
-            bank: investProfiles[0].investor.bank,
-            status: status,
-            joinDate: joinDate,
-            leftDate: leftDate,
+            investorId: latest.investorId,
+            createdDate: latest.investor.createdDate,
+            updatedDate: latest.investor.updatedDate,
+            name: latest.investor.name,
+            alias: latest.investor.alias,
+            phoneNumber: latest.investor.phoneNumber,
+            bank: latest.investor.bank,
+            status: latest.status,
+            joinDate: oldest.joinDate,
             totalDeposited: totalDeposited,
             totalWithdrawn: totalWithdrawn
         };
