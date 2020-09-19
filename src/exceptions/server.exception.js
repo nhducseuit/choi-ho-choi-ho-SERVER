@@ -6,7 +6,7 @@ class ServerException extends Exception {
         code,
         error
     ) {
-        super(message, code, error);
+        super(message, code, 500, error);
     }
 }
 

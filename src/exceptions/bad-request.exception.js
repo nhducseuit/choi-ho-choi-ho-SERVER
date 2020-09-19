@@ -6,7 +6,7 @@ class BadRequestException extends Exception {
         code,
         error
     ) {
-        super(message, code, error);
+        super(message, code, 400, error);
     }
 }
 

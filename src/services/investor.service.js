@@ -1,4 +1,5 @@
-const ServerException = require('../exceptions/server.exception');
+const NotFoundException = require('../exceptions/not-found.exception');
+const BadRequestException = require('../exceptions/bad-request.exception');
 
 const INVEST_PROFILE_COLLECTION = 'invest_profiles';
 const INVESTORS_COLLECTION = 'investors';
@@ -43,6 +44,10 @@ class InvestorService {
             }
         ).map((result) => result.id).toArray();
 
+        if (roundIds.length === 0) {
+            return [];
+        }
+
         // Get all invest profiles in a set of rounds
         const investProfiles = await this.collection(INVEST_PROFILE_COLLECTION).aggregate([
             {
@@ -69,7 +74,71 @@ class InvestorService {
             }
         ]).toArray();
 
-        const investProfilesGroupByInvestor = investProfiles.reduce((acc, cur) => {
+        if (investProfiles.length === 0) {
+            return [];
+        }
+
+        const investProfilesGroupByInvestor = this.groupInvestProfilesByInvestor(investProfiles);
+        return investProfilesGroupByInvestor.map(investProfilesGroup => this.getInvestorProfileInTontine(investProfilesGroup));
+    }
+
+    async getInvestorForTontine(investorId, tontineId) {
+
+        // Get a set of round belonging to a tontine
+        const roundIds = await this.collection(ROUNDS_COLLECTION).find(
+            { tontineId: tontineId },
+            {
+                projection: {
+                    id: 1,
+                    _id: 0
+                }
+            }
+        ).map((result) => result.id).toArray();
+
+        if (roundIds.length === 0) {
+            throw new BadRequestException('Tontine has no round', 'EMPTY_TONTINE', {
+                tontineId: tontineId
+            });
+        }
+
+        // Get all invest profile of an investor in a set of rounds
+        const investProfiles = await this.collection(INVEST_PROFILE_COLLECTION).aggregate([
+            {
+                $match: {
+                    roundId: { $in: roundIds },
+                    investorId: investorId
+                }
+            },
+            {
+                $lookup: {
+                    from: 'investors',
+                    localField: 'investorId',
+                    foreignField: 'id',
+                    as: 'investor'
+                }
+            },
+            {
+                $unwind: '$investor'
+            },
+            {
+                $sort: {
+                    joinDate: -1
+                }
+            }
+        ]).toArray();
+
+        if (investProfiles.length === 0) {
+            throw new NotFoundException('Invest profile not found', 'INVEST_PROFILE_NOT_FOUND', {
+                investorId: investorId,
+                tontineId: tontineId
+            });
+        }
+
+        return this.getInvestorProfileInTontine(investProfiles);
+    }
+
+    groupInvestProfilesByInvestor(investProfiles) {
+        return investProfiles.reduce((acc, cur) => {
             let investProfileGroup = acc[acc.length - 1];
             if (!investProfileGroup) {
                 investProfileGroup = [cur];
@@ -85,42 +154,6 @@ class InvestorService {
                 return acc;
             }
         }, []);
-
-        return investProfilesGroupByInvestor.map(investProfilesGroup => this.getInvestorProfileInTontine(investProfilesGroup));
-    }
-
-    async getInvestorForTontine(investorId, tontineId) {
-
-        // Get a set of round belonging to a tontine
-        const roundIds = await this.collection(ROUNDS_COLLECTION).find(
-            { tontineId: tontineId },
-            {
-                id: 1,
-                _id: 0
-            }
-        ).toArray();
-
-        // Get all invest profile of an investor in a set of rounds
-        const investProfiles = await this.collection(INVEST_PROFILE_COLLECTION).find(
-            {
-                $query: {
-                    investorId: investorId,
-                    roundId: { $in: roundIds }
-                },
-                $orderby: {
-                    joinDate: -1
-                }
-            }
-        ).toArray();
-
-        if (!investProfiles) {
-            throw new ServerException('Cannot find investor for tontine', 'CANNOT_FIND_INVESTOR_TONTINE', {
-                investorId: investorId,
-                tontineId: tontineId
-            });
-        }
-
-        return this.getInvestorProfileInTontine(investProfiles);
     }
 
     getInvestorProfileInTontine(investProfiles) {
